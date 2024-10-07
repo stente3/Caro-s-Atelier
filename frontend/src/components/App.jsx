@@ -1,6 +1,5 @@
-import { Nav } from './Nav';
-import { SearchBar } from './SearchBar';
-import { ProductList } from '../views/ProductList';
+import { HeaderLayout } from '../Layout/HeaderLayout';
+import { ProductList } from './ProductList';
 import { useDataFetch } from '../hooks/useDataFetch';
 
 function App() {
@@ -9,8 +8,7 @@ function App() {
 	);
 	return (
 		<>
-			<Nav />
-			<SearchBar />
+			<HeaderLayout />
 			<ProductList products={products} loading={loading} error={error} />
 		</>
 	);

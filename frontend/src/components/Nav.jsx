@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function Nav() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,13 +11,13 @@ function Nav() {
 	return (
 		<nav className='bg-white relative'>
 			<div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-4 px-7'>
-				<a href='#' className='flex items-center justify-center h-full'>
+				<Link to={"/"} href='#' className='flex items-center justify-center h-full'>
 					<img
 						src='https://s3-alpha-sig.figma.com/img/0707/e6b2/022462187b7b2dab43ed95bab6b24a66?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=L1ZM~Cja-9Vv5rwyx1kHeELDVUY3vkFD6C-J~NTOlNO-2WvskMm7j~Tr~BxY1KOuHSMVtnV55lXXsGKiNgU4lIosOlSfPPK~2dBzZhfHW6xB16mcrWzxlbl-PagG8ePZkw0Kq84fejJwiYHYgkvWizfUoZVzRWmkZ-vuxRyCHVomKAridqb3cjy~oFKwTH6nOpeFhnb~Hr1wH0yZ3yrck~F9hwmqgDdUYyA0~x~1Ru~TcVmmzxcYMY0VRXxQSWEBOZ9QlB3OVsObIpCMggxB-k7ltpPiXiUovUVqkXZAL8eT68~UyY6lkERTi48GYrxkKpo48TpUNKUE1Hv21lCZYw__'
 						className='h-8'
 						alt='Flowbite Logo'
 					/>
-				</a>
+				</Link>
 				<div className='flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse'>
 					<button
 						data-collapse-toggle='navbar-cta'
