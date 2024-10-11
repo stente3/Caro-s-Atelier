@@ -1,13 +1,20 @@
 import { useState } from 'react';
-import useStore from '../stores/productStore';
+import useProductStore from '../stores/productStore';
+import useCartStore from '../stores/cartStore';
 import { HeaderLayout } from '../Layout/HeaderLayout';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useDataFetch } from '../hooks/useDataFetch';
 
 const ProductDetails = () => {
 	const [isHidden, setIsHidden] = useState(true);
+	const [currentSize, setCurrentSize] = useState('Seleccione la talla');
+	const [canAddToCart, setCanAddToCart] = useState(false);
+
+	const { incrementItemCount } = useCartStore();
+
 	const { productId } = useParams();
 	const productIdNumber = Number(productId);
+	const navigate = useNavigate();
 
 	// Utiliza el hook para obtener datos
 	const { loading, error } = useDataFetch(
@@ -15,12 +22,31 @@ const ProductDetails = () => {
 	);
 
 	// Obtenemos los productos del estado global de Zustand
-	const products = useStore(state => state.products);
+	const products = useProductStore(state => state.products);
 	const product = products.find(p => p.id === productIdNumber);
 
 	// Función para manejar la visibilidad de detalles
-	const handleClick = () => {
+	const handleToggleDropDown = () => {
 		setIsHidden(!isHidden);
+	};
+
+	// Función para manejar la talla seleccionada por el usuario
+	const handleCurrentSize = size => {
+		setCurrentSize(size);
+
+		// Verificar si la talla seleccionada es válida
+		if (size !== 'Seleccione la talla') {
+			setCanAddToCart(true);
+		} else {
+			setCanAddToCart(false);
+		}
+	};
+	// Función para manejar el agregar productos al carrito
+	const handleCart = () => {
+		if (canAddToCart) {
+			incrementItemCount();
+			navigate('/');
+		}
 	};
 
 	// Renderizado del componente
@@ -64,13 +90,13 @@ const ProductDetails = () => {
 
 									<div
 										className='relative inline-block text-left w-full'
-										onClick={handleClick}
+										onClick={handleToggleDropDown}
 									>
 										<button
 											id='dropdown-button'
 											className='inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500'
 										>
-											Seleccione la talla
+											{currentSize}
 											<svg
 												xmlns='http://www.w3.org/2000/svg'
 												className='w-5 h-5 ml-2 -mr-1'
@@ -97,6 +123,7 @@ const ProductDetails = () => {
 											>
 												{product.talla.map((talla, index) => (
 													<a
+														onClick={() => handleCurrentSize(talla)}
 														key={index}
 														className='flex justify-center block rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer'
 														role='menuitem'
@@ -121,6 +148,12 @@ const ProductDetails = () => {
 											</span>
 										</div>
 									</div>
+									<button
+										className={`inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white border rounded-md  ${canAddToCart ? 'bg-gray-950' : 'bg-gray-400 cursor-default'}`}
+										onClick={handleCart}
+									>
+										Agregar al carrito
+									</button>
 								</div>
 							</div>
 						</div>

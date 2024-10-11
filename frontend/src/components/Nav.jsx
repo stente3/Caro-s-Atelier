@@ -1,17 +1,37 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import useCartStore from '../stores/cartStore';
 
 function Nav() {
+	let tempItemCount = 0;
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [animate, setAnimate] = useState(false);
+
+	const { itemCount } = useCartStore();
 
 	const handleToggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
 	};
 
+	// Efecto para activar la animación al cambiar itemCount
+	useEffect(() => {
+		if (itemCount > 0) {
+			setAnimate(true);
+			const timer = setTimeout(() => setAnimate(false), 300); // Duración de la animación
+			tempItemCount++;
+
+			return () => clearTimeout(timer); // Limpiar el timer al desmontar
+		}
+	}, [tempItemCount]);
+
 	return (
 		<nav className='bg-white relative'>
 			<div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-4 px-7'>
-				<Link to={"/"} href='#' className='flex items-center justify-center h-full'>
+				<Link
+					to={'/'}
+					href='#'
+					className='flex items-center justify-center h-full'
+				>
 					<img
 						src='https://s3-alpha-sig.figma.com/img/0707/e6b2/022462187b7b2dab43ed95bab6b24a66?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=L1ZM~Cja-9Vv5rwyx1kHeELDVUY3vkFD6C-J~NTOlNO-2WvskMm7j~Tr~BxY1KOuHSMVtnV55lXXsGKiNgU4lIosOlSfPPK~2dBzZhfHW6xB16mcrWzxlbl-PagG8ePZkw0Kq84fejJwiYHYgkvWizfUoZVzRWmkZ-vuxRyCHVomKAridqb3cjy~oFKwTH6nOpeFhnb~Hr1wH0yZ3yrck~F9hwmqgDdUYyA0~x~1Ru~TcVmmzxcYMY0VRXxQSWEBOZ9QlB3OVsObIpCMggxB-k7ltpPiXiUovUVqkXZAL8eT68~UyY6lkERTi48GYrxkKpo48TpUNKUE1Hv21lCZYw__'
 						className='h-8'
@@ -46,9 +66,17 @@ function Nav() {
 					</button>
 					<button
 						type='button'
-						className='inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'
+						className='inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 relative'
 						aria-label='Shopping Cart'
 					>
+						<div className='top-0 absolute left-6'>
+							<p
+								className={`h-0.5 w-0.5 flex items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white transition-transform duration-300 
+          ${animate ? 'scale-110' : 'scale-100'}`}
+							>
+								{itemCount}
+							</p>
+						</div>
 						<svg
 							version='1.1'
 							id='Layer_1'
