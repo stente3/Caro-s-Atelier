@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import useProductStore from '../stores/productStore';
+import useProductsStore from '../stores/productStore';
 import useCartStore from '../stores/cartStore';
 import { HeaderLayout } from '../Layout/HeaderLayout';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDataFetch } from '../hooks/useDataFetch';
 
 const ProductDetails = () => {
+	const url = import.meta.env.VITE_API_URL;
 	const [isHidden, setIsHidden] = useState(true);
 	const [currentSize, setCurrentSize] = useState('Seleccione la talla');
 	const [canAddToCart, setCanAddToCart] = useState(false);
@@ -17,12 +18,10 @@ const ProductDetails = () => {
 	const navigate = useNavigate();
 
 	// Utiliza el hook para obtener datos
-	const { loading, error } = useDataFetch(
-		'https://raw.githubusercontent.com/CAFM3/Basic-Json/refs/heads/main/data.json',
-	);
+	const { loading, error } = useDataFetch(url);
 
 	// Obtenemos los productos del estado global de Zustand
-	const products = useProductStore(state => state.products);
+	const products = useProductsStore(state => state.products);
 	const product = products.find(p => p.id === productIdNumber);
 
 	// Función para manejar la visibilidad de detalles

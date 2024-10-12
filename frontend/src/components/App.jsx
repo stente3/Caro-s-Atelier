@@ -1,14 +1,13 @@
 import { HeaderLayout } from '../Layout/HeaderLayout';
 import { ProductList } from './ProductList';
 import { useDataFetch } from '../hooks/useDataFetch.js';
-import useProductStore from '../stores/productStore';
+import useProductsStore from '../stores/productStore';
 
 function App() {
-	const { loading, error } = useDataFetch(
-		'https://raw.githubusercontent.com/CAFM3/Basic-Json/refs/heads/main/data.json',
-	);
+	const url = import.meta.env.VITE_API_URL;
+	const { loading, error } = useDataFetch(url);
 	// Obtiene la lista de productos del estado global
-	const products = useProductStore(state => state.products);
+	const products = useProductsStore(state => state.products);
 
 	return (
 		<>

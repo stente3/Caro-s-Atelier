@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './components/App.jsx';
 import { NotFound } from './views/NotFound.jsx';
 import { ProductDetails } from './views/ProductDetails.jsx';
+import { ProductAdminPanel } from './views/ProductAdminPanel.jsx';
 import './styles/index.css';
 
 const router = createBrowserRouter([
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
 	{
 		path: '/product/:productId',
 		element: <ProductDetails />,
+	},
+	{
+		path: '/admin/caro',
+		element: <ProductAdminPanel />
 	},
 ]);
 
