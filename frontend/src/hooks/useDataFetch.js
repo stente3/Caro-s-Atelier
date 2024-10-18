@@ -23,7 +23,7 @@ const useDataFetch = url => {
 					const response = await axios.get(url);
 
 					// Actualizamos el estado global de Zustand con los productos obtenidos.
-					updateProducts(response.data.productos);
+					updateProducts(response.data.record.productos);
 					setHasFetched(true); // Actualizamos `hasFetched` a true para evitar futuros fetches.
 				} catch (err) {
 					// Si hay un error en la solicitud, actualizamos el estado `error` con el mensaje del error.
