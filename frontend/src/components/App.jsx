@@ -2,6 +2,8 @@ import { HeaderLayout } from '../Layout/HeaderLayout';
 import { ProductList } from './ProductList';
 import { useDataFetch } from '../hooks/useDataFetch.js';
 import useProductsStore from '../stores/productStore';
+import { Footer } from '../components/Footer';
+
 
 function App() {
 	const url = import.meta.env.VITE_API_URL;
@@ -13,6 +15,7 @@ function App() {
 		<>
 			<HeaderLayout />
 			<ProductList products={products} loading={loading} error={error} />
+			<Footer />
 		</>
 	);
 }
