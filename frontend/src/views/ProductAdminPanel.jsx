@@ -4,6 +4,8 @@ import { useDataFetch } from '../hooks/useDataFetch';
 import { Nav } from '../components/Nav';
 import { ChangeProductModal } from '../components/ChangeProductModal';
 import { DeleteProductModal } from '../components/DeleteProductModal';
+import { AddProduct } from '../components/AddProduct';
+import { Footer } from '../components/Footer';
 
 const ProductAdminPanel = () => {
 	// Estado para almacenar el ID del producto que se está editando actualmente
@@ -140,6 +142,7 @@ const ProductAdminPanel = () => {
 			{/* Mostrar mensaje de error si hay */}
 			{error && <p>Error: {error}</p>}
 			{/* Mostrar detalles del producto si está disponible */}
+			<AddProduct />
 			<table className='border-collapse w-full'>
 				<thead>
 					<tr>
@@ -169,6 +172,9 @@ const ProductAdminPanel = () => {
 							className='bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0'
 						>
 							<td className='w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static'>
+								<span className='lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase'>
+									Nombre
+								</span>
 								{editingProductId === product.id ? (
 									<input
 										type='text'
@@ -182,6 +188,9 @@ const ProductAdminPanel = () => {
 								)}
 							</td>
 							<td className='w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static'>
+								<span className='lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase'>
+									Descripción
+								</span>
 								{editingProductId === product.id ? (
 									<textarea
 										name='descripcion'
@@ -194,6 +203,9 @@ const ProductAdminPanel = () => {
 								)}
 							</td>
 							<td className='w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static'>
+								<span className='lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase'>
+									Precio
+								</span>
 								{editingProductId === product.id ? (
 									<input
 										type='number'
@@ -207,6 +219,9 @@ const ProductAdminPanel = () => {
 								)}
 							</td>
 							<td className='w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static'>
+								<span className='lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase'>
+									Color
+								</span>
 								{editingProductId === product.id ? (
 									<input
 										type='text'
@@ -220,6 +235,9 @@ const ProductAdminPanel = () => {
 								)}
 							</td>
 							<td className='w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static'>
+								<span className='lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase'>
+									Talla
+								</span>
 								{editingProductId === product.id ? (
 									<input
 										type='text'
@@ -233,6 +251,9 @@ const ProductAdminPanel = () => {
 								)}
 							</td>
 							<td className='w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static'>
+								<span className='lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase'>
+									Categoría
+								</span>
 								{editingProductId === product.id ? (
 									<input
 										type='text'
@@ -246,6 +267,9 @@ const ProductAdminPanel = () => {
 								)}
 							</td>
 							<td className='w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static flex justify-center'>
+								<span className='lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase'>
+									Imagen
+								</span>
 								{editingProductId === product.id ? (
 									<input
 										type='file'
@@ -261,6 +285,9 @@ const ProductAdminPanel = () => {
 								)}
 							</td>
 							<td className='w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static'>
+								<span className='lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase'>
+									Acciones
+								</span>
 								{editingProductId === product.id ? (
 									<>
 										<button
@@ -297,6 +324,7 @@ const ProductAdminPanel = () => {
 					))}
 				</tbody>
 			</table>
+			<Footer />
 		</>
 	);
 };
