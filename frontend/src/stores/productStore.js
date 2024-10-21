@@ -4,9 +4,22 @@ import axios from 'axios';
 const useProductsStore = create((set, get) => ({
 	products: [],
 	hasFetched: false, // Inicialmente es false, ya que no se ha hecho el fetch
+	isFirstLoad: true, // Nuevo estado para controlar la primera carga
+
 	updateAllProducts: newProducts => {
-		set({ products: newProducts });
-		get().updateJSONBin(newProducts);
+		set(state => {
+			if (state.isFirstLoad) {
+				// Si es la primera carga, solo actualizamos los productos y marcamos que ya no es la primera carga
+				return {
+					products: newProducts,
+					isFirstLoad: false
+				};
+			} else {
+				// Si no es la primera carga, actualizamos los productos y JSONBin
+				get().updateJSONBin(newProducts);
+				return { products: newProducts };
+			}
+		});
 	},
 	setHasFetched: status => set({ hasFetched: status }),
 
@@ -59,9 +72,9 @@ const useProductsStore = create((set, get) => ({
 					},
 				}
 			);
-			console.log('JSONBin actualizado:', response.data);
+			console.log('Datos enviados al backend para actualizar JSONBin:', response.data);
 		} catch (error) {
-			console.error('Error al actualizar JSONBin:', error);
+			console.error('Error al enviar datos al backend:', error);
 		}
 	},
 }));

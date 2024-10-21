@@ -7,6 +7,7 @@ import { DeleteProductModal } from '../components/DeleteProductModal';
 import { AddProduct } from '../components/AddProduct';
 import { Footer } from '../components/Footer';
 import { useImgurUpload } from '../hooks/useImgurUpload';
+import { Loader } from '../components/Loader';
 
 const ProductAdminPanel = () => {
 	// Estado para almacenar el ID del producto que se está editando actualmente
@@ -150,7 +151,7 @@ const ProductAdminPanel = () => {
 
 	return (
 		<>
-			<Nav />
+			<Nav admin={true} />
 			{/* Modal de confirmación */}
 			<ChangeProductModal
 				isOpen={isChangeModalOpen}
@@ -164,7 +165,7 @@ const ProductAdminPanel = () => {
 				onConfirm={handleConfirmDelete}
 			/>
 			{/* Mostrar mensaje de carga */}
-			{loading && <p>Cargando...</p>}
+			{loading && <Loader />}
 			{/* Mostrar mensaje de error si hay */}
 			{error && <p>Error: {error}</p>}
 			{/* Mostrar detalles del producto si está disponible */}

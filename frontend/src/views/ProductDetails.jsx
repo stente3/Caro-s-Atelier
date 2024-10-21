@@ -4,6 +4,8 @@ import useCartStore from '../stores/cartStore';
 import { HeaderLayout } from '../Layout/HeaderLayout';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDataFetch } from '../hooks/useDataFetch';
+import { Loader } from '../components/Loader';
+import { Footer } from '../components/Footer';
 
 const ProductDetails = () => {
 	const url = import.meta.env.VITE_API_URL;
@@ -53,7 +55,7 @@ const ProductDetails = () => {
 		<>
 			<HeaderLayout />
 			{/* Mostrar mensaje de carga */}
-			{loading && <p>Cargando...</p>}
+			{loading && <Loader />}
 			{/* Mostrar mensaje de error si hay */}
 			{error && <p>Error: {error}</p>}
 			{/* Mostrar detalles del producto si está disponible */}
@@ -157,6 +159,7 @@ const ProductDetails = () => {
 							</div>
 						</div>
 					</div>
+					<Footer />
 				</>
 			)}
 			{/* Mensaje si el producto no se encuentra */}
