@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import useProductsStore from '../stores/productStore';
+import { useImgurUpload } from '../hooks/useImgurUpload';
 
 const AddProduct = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,11 +16,12 @@ const AddProduct = () => {
 	const [formError, setFormError] = useState(false);
 
 	const { addProduct, products } = useProductsStore();
+	const { uploadImage, loading: uploadingImage } = useImgurUpload();
 
 	const handleOpenModal = () => {
 		console.log(products);
 		setIsModalOpen(true);
-		setFormError(false); // Limpiamos cualquier error anterior al abrir el modal
+		setFormError(false);
 	};
 
 	const handleCloseModal = () => {
@@ -38,17 +40,15 @@ const AddProduct = () => {
 	const handleInputChange = e => {
 		const { name, value } = e.target;
 
-		// Si el campo es "talla", eliminamos espacios y lo convertimos a un arreglo
 		if (name === 'talla') {
-			const cleanedValue = value.replace(/\s+/g, ''); // Eliminamos todos los espacios
-			const tallaArray = cleanedValue.split(','); // Convertimos la cadena en un arreglo por comas
+			const cleanedValue = value.replace(/\s+/g, '');
+			const tallaArray = cleanedValue.split(',');
 
 			setFormData({
 				...formData,
-				[name]: tallaArray, // Almacenamos el arreglo en lugar de la cadena
+				[name]: tallaArray,
 			});
 		} else {
-			// Para otros campos, simplemente actualizamos el valor como una cadena normal
 			setFormData({
 				...formData,
 				[name]: value,
@@ -56,11 +56,14 @@ const AddProduct = () => {
 		}
 	};
 
-	// En la función handleSave
-	const handleSave = () => {
-		// Verificamos si todos los campos están llenos
+	const handleSave = async () => {
+		if (uploadingImage) {
+			console.log('Espera mientras se sube la imagen...');
+			return;
+		}
+
 		const allFieldsFilled = Object.values(formData).every(
-			field => field !== '' && (field !== formData.imagen || field !== null), // Aseguramos que la imagen no sea null
+			field => field !== '' && (field !== formData.imagen || field !== null),
 		);
 
 		if (!allFieldsFilled) {
@@ -68,26 +71,41 @@ const AddProduct = () => {
 			return;
 		}
 
-		// Si todos los campos están llenos, agregamos el producto a la lista
-		addProduct(formData);
+		try {
+			let updatedFormData = { ...formData };
 
-		// Cerramos el modal después de guardar
-		handleCloseModal();
+			if (formData.imagen && formData.imagen.startsWith('data:image')) {
+				const result = await uploadImage(formData.imagen);
+
+				if (!result.success) {
+					console.error('Error al subir la imagen:', result.error);
+					return;
+				}
+
+				updatedFormData = {
+					...updatedFormData,
+					imagen: result.imageLink
+				};
+			}
+
+			addProduct(updatedFormData);
+			handleCloseModal();
+		} catch (error) {
+			console.error('Error al procesar la imagen:', error);
+		}
 	};
 
-	// Función para manejar el cambio de imagen de producto
 	const handleImageChange = e => {
-		const file = e.target.files[0]; // Obtenemos el primer archivo seleccionado
+		const file = e.target.files[0];
 		if (file) {
-			const reader = new FileReader(); // Usamos FileReader para leer el contenido del archivo
+			const reader = new FileReader();
 			reader.onloadend = () => {
-				// Cuando la lectura termine, actualizamos el formData con la nueva imagen
 				setFormData(prevState => ({
-					...prevState, // Mantenemos los valores previos
-					imagen: reader.result, // Guardamos la imagen como una cadena en base64
+					...prevState,
+					imagen: reader.result,
 				}));
 			};
-			reader.readAsDataURL(file); // Leemos el archivo como una URL en base64
+			reader.readAsDataURL(file);
 		}
 	};
 

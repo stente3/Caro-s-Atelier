@@ -6,6 +6,7 @@ import { ChangeProductModal } from '../components/ChangeProductModal';
 import { DeleteProductModal } from '../components/DeleteProductModal';
 import { AddProduct } from '../components/AddProduct';
 import { Footer } from '../components/Footer';
+import { useImgurUpload } from '../hooks/useImgurUpload';
 
 const ProductAdminPanel = () => {
 	// Estado para almacenar el ID del producto que se está editando actualmente
@@ -31,6 +32,9 @@ const ProductAdminPanel = () => {
 
 	// Obtenemos los productos y las funciones para eliminar y actualizar productos desde el estado global gestionado por Zustand
 	const { products, removeProductById, updateProductById } = useProductsStore();
+
+	// Hook para subir imágenes a Imgur
+	const { uploadImage, loading: uploadingImage } = useImgurUpload();
 
 	// Función para eliminar un producto por su ID
 	const handleRemove = id => {
@@ -85,19 +89,41 @@ const ProductAdminPanel = () => {
 	};
 
 	// Función para guardar el producto actualizado
-	const handleSave = (id, product) => {
-		// Llamamos a la función de Zustand para actualizar el producto en la store
-		updateProductById(id, product);
-		// Salimos del modo de edición
+	const handleSave = async (id, product) => {
+		if (product.imagen && product.imagen.startsWith('data:image')) {
+			try {
+				const result = await uploadImage(product.imagen);
+
+				if (!result.success) {
+					console.error('Error al subir la imagen:', result.error);
+					return;
+				}
+
+				const updatedProductWithImgurLink = {
+					...product,
+					imagen: result.imageLink
+				};
+
+				updateProductById(id, updatedProductWithImgurLink);
+			} catch (error) {
+				console.error('Error al procesar la imagen:', error);
+				return;
+			}
+		} else {
+			updateProductById(id, product);
+		}
+
 		setEditingProductId(null);
-		// Cerramos el modal de confirmación de cambios
 		setIsChangeModalOpen(false);
 	};
 
 	// Función para confirmar la edición y guardarla
-	const handleConfirmSave = () => {
-		// Guardamos el producto seleccionado con los cambios actualizados
-		handleSave(selectedProductId, updatedProduct);
+	const handleConfirmSave = async () => {
+		if (uploadingImage) {
+			console.log('Espera mientras se sube la imagen...');
+			return;
+		}
+		await handleSave(selectedProductId, updatedProduct);
 	};
 
 	// Función para abrir el modal de confirmación de edición
