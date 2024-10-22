@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useCartStore from '../stores/cartStore';
-import Logo from '../assets/logo.png';
+import Logo from '../assets/Logo.jpg';
 
 function Nav({ admin = false }) {
 	let tempItemCount = 0;
