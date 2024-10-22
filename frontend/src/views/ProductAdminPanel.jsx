@@ -8,6 +8,7 @@ import { AddProduct } from '../components/AddProduct';
 import { Footer } from '../components/Footer';
 import { useImgurUpload } from '../hooks/useImgurUpload';
 import { Loader } from '../components/Loader';
+import toast, { Toaster } from 'react-hot-toast';
 
 const ProductAdminPanel = () => {
 	// Estado para almacenar el ID del producto que se está editando actualmente
@@ -38,17 +39,33 @@ const ProductAdminPanel = () => {
 	const { uploadImage, loading: uploadingImage } = useImgurUpload();
 
 	// Función para eliminar un producto por su ID
-	const handleRemove = id => {
-		// Llama a la función de Zustand para eliminar el producto del estado global
-		removeProductById(id);
-		// Cierra el modal de confirmación de eliminación
-		setIsDeleteModalOpen(false);
+	const handleRemove = async (id) => {
+		// Mostrar el toast de carga
+		const loadingToast = toast.loading('Eliminando el elemento...');
+
+		try {
+			// Llama a la función de Zustand para eliminar el producto del estado global
+			removeProductById(id);
+
+			// Cerrar el toast de carga y mostrar el toast de éxito
+			toast.dismiss(loadingToast);
+			toast.success('Elemento eliminado con éxito');
+		} catch (error) {
+			// Si ocurre un error, cerrar el toast de carga y mostrar un toast de error
+			toast.dismiss(loadingToast);
+			toast.error('Error al eliminar el elemento');
+			console.error('Error al eliminar el producto:', error);
+		} finally {
+			// Cerrar el modal de confirmación de eliminación
+			setIsDeleteModalOpen(false);
+		}
 	};
 
 	// Función para iniciar la edición de un producto
 	const handleEdit = product => {
 		// Establece el ID del producto en modo edición
 		setEditingProductId(product.id);
+
 		// Establece una copia del producto actual para editar sus valores
 		setUpdatedProduct(product);
 	};
@@ -102,7 +119,7 @@ const ProductAdminPanel = () => {
 
 				const updatedProductWithImgurLink = {
 					...product,
-					imagen: result.imageLink
+					imagen: result.imageLink,
 				};
 
 				updateProductById(id, updatedProductWithImgurLink);
@@ -124,7 +141,25 @@ const ProductAdminPanel = () => {
 			console.log('Espera mientras se sube la imagen...');
 			return;
 		}
-		await handleSave(selectedProductId, updatedProduct);
+
+		// Mostrar el toast de carga
+		const loadingToast = toast.loading('Guardando cambios...');
+
+		try {
+			await handleSave(selectedProductId, updatedProduct);
+
+			// Cerrar el toast de carga y mostrar el toast de éxito
+			toast.dismiss(loadingToast);
+			toast.success('Producto editado con éxito');
+		} catch (error) {
+			// Si ocurre un error, cerrar el toast de carga y mostrar un toast de error
+			toast.dismiss(loadingToast);
+			toast.error('Error al editar el producto');
+			console.error('Error al editar el producto:', error);
+		} finally {
+			// Cerrar el modal de edición
+			setIsChangeModalOpen(false);
+		}
 	};
 
 	// Función para abrir el modal de confirmación de edición
@@ -352,6 +387,7 @@ const ProductAdminPanel = () => {
 				</tbody>
 			</table>
 			<Footer />
+			<Toaster />
 		</>
 	);
 };

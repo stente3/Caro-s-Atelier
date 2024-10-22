@@ -6,6 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDataFetch } from '../hooks/useDataFetch';
 import { Loader } from '../components/Loader';
 import { Footer } from '../components/Footer';
+import toast, { Toaster } from 'react-hot-toast';
 
 const ProductDetails = () => {
 	const url = import.meta.env.VITE_API_URL;
@@ -42,6 +43,7 @@ const ProductDetails = () => {
 			setCanAddToCart(false);
 		}
 	};
+
 	// Función para manejar el agregar productos al carrito
 	const handleCart = () => {
 		if (canAddToCart) {
@@ -164,6 +166,7 @@ const ProductDetails = () => {
 			)}
 			{/* Mensaje si el producto no se encuentra */}
 			{!product && !loading && <p>Producto no encontrado.</p>}
+			<Toaster />
 		</>
 	);
 };

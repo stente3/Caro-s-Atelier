@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import useProductsStore from '../stores/productStore';
 import { useImgurUpload } from '../hooks/useImgurUpload';
+import toast, { Toaster } from 'react-hot-toast';
 
 const AddProduct = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -71,6 +72,9 @@ const AddProduct = () => {
 			return;
 		}
 
+		// Mostrar el toast de carga
+		const loadingToast = toast.loading('Agregando nuevo producto...');
+
 		try {
 			let updatedFormData = { ...formData };
 
@@ -78,20 +82,26 @@ const AddProduct = () => {
 				const result = await uploadImage(formData.imagen);
 
 				if (!result.success) {
-					console.error('Error al subir la imagen:', result.error);
-					return;
+					throw new Error('Error al subir la imagen');
 				}
 
 				updatedFormData = {
 					...updatedFormData,
-					imagen: result.imageLink
+					imagen: result.imageLink,
 				};
 			}
 
-			addProduct(updatedFormData);
+			await addProduct(updatedFormData);
+
+			// Cerrar el toast de carga y mostrar el toast de éxito
+			toast.dismiss(loadingToast);
+			toast.success("Producto agregado con éxito");
 			handleCloseModal();
 		} catch (error) {
-			console.error('Error al procesar la imagen:', error);
+			// Si ocurre un error, cerrar el toast de carga y mostrar un toast de error
+			toast.dismiss(loadingToast);
+			toast.error('Error al agregar el producto');
+			console.error('Error al procesar la imagen o agregar el producto:', error);
 		}
 	};
 
@@ -244,6 +254,7 @@ const AddProduct = () => {
 					</div>
 				</div>
 			)}
+			<Toaster />
 		</>
 	);
 };
