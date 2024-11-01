@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import useCartStore from '../stores/cartStore';
 
-const CartProduct = ({ img, talla, nombre, precio, cantidad }) => {
-	const [tempCantidad, setTempCantidad] = useState(cantidad);
+const CartProduct = ({ img, talla, nombre, precio, cantidad, id }) => {
+	const { increaseQuantity, decreaseQuantity, removeFromCart } = useCartStore();
 	return (
 		<>
 			<div className='justify-between mb-6 rounded-lg bg-white p-6 shadow-lg sm:flex sm:justify-start'>
@@ -18,7 +18,7 @@ const CartProduct = ({ img, talla, nombre, precio, cantidad }) => {
 					<div className='mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block'>
 						<div className='flex items-center border-gray-100'>
 							<span
-								onClick={() => setTempCantidad(tempCantidad > 1 ? tempCantidad - 1 : 1)}
+								onClick={() => decreaseQuantity(id, talla)}
 								className='cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50'
 							>
 								{' '}
@@ -27,12 +27,12 @@ const CartProduct = ({ img, talla, nombre, precio, cantidad }) => {
 							<input
 								className='h-8 w-8 border bg-white text-center text-xs outline-none'
 								type='number'
-								value={tempCantidad}
+								value={cantidad}
 								min='1'
 								readOnly
 							/>
 							<span
-								onClick={() => setTempCantidad(tempCantidad + 1)}
+								onClick={() => increaseQuantity(id, talla)}
 								className='cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50'
 							>
 								{' '}
@@ -53,6 +53,7 @@ const CartProduct = ({ img, talla, nombre, precio, cantidad }) => {
 								strokeWidth='1.5'
 								stroke='currentColor'
 								className='h-5 w-5 cursor-pointer duration-150 hover:text-red-500'
+								onClick={() => removeFromCart(id, talla)}
 							>
 								<path
 									strokeLinecap='round'
@@ -69,4 +70,3 @@ const CartProduct = ({ img, talla, nombre, precio, cantidad }) => {
 };
 
 export { CartProduct };
-

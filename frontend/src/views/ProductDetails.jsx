@@ -6,7 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDataFetch } from '../hooks/useDataFetch';
 import { Loader } from '../components/Loader';
 import { Footer } from '../components/Footer';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 const ProductDetails = () => {
 	const url = import.meta.env.VITE_API_URL;
@@ -14,7 +14,7 @@ const ProductDetails = () => {
 	const [currentSize, setCurrentSize] = useState('Seleccione la talla');
 	const [canAddToCart, setCanAddToCart] = useState(false);
 
-	const { incrementItemCount } = useCartStore();
+	const { addToCart } = useCartStore();
 
 	const { productId } = useParams();
 	const productIdNumber = Number(productId);
@@ -47,7 +47,7 @@ const ProductDetails = () => {
 	// Función para manejar el agregar productos al carrito
 	const handleCart = () => {
 		if (canAddToCart) {
-			incrementItemCount();
+			addToCart(productIdNumber, 1, currentSize);
 			navigate('/');
 		}
 	};

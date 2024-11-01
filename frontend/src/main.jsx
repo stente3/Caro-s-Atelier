@@ -4,6 +4,7 @@ import App from './components/App.jsx';
 import { NotFound } from './views/NotFound.jsx';
 import { ProductDetails } from './views/ProductDetails.jsx';
 import { ProductAdminPanel } from './views/ProductAdminPanel.jsx';
+import { CartPanel } from './views/CartPanel.jsx';
 import './styles/index.css';
 
 const router = createBrowserRouter([
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
 	{
 		path: '/admin/caro',
 		element: <ProductAdminPanel />,
+	},
+	{
+		path: '/cart',
+		element: <CartPanel />,
 	},
 ]);
 

@@ -8,7 +8,7 @@ function Nav({ admin = false }) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [animate, setAnimate] = useState(false);
 
-	const { itemCount } = useCartStore();
+	const { itemCount, cart } = useCartStore();
 
 	const handleToggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
@@ -101,7 +101,11 @@ function Nav({ admin = false }) {
 						>
 							<img src={Logo} className='h-8' alt='Logo' />
 						</Link>
-						<div className='flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse'>
+						<Link
+							to={'/cart'}
+							onClick={() => console.log(cart)}
+							className='flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse'
+						>
 							<button
 								data-collapse-toggle='navbar-cta'
 								type='button'
@@ -166,7 +170,7 @@ function Nav({ admin = false }) {
 									</g>
 								</svg>
 							</button>
-						</div>
+						</Link>
 						<div
 							className={`md:flex ${isMenuOpen ? 'block' : 'hidden'} absolute md:static top-16 left-0 z-50 w-full md:w-auto bg-white md:bg-transparent`}
 							id='navbar-cta'
