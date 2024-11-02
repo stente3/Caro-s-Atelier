@@ -1,9 +1,19 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Nav } from '../components/Nav';
 import { CartProduct } from '../components/CartProduct';
 import useCartStore from '../stores/cartStore';
 
 const CartPanel = () => {
   const { cart, totalPrice } = useCartStore();
+  const navigate = useNavigate();
+
+  // Redirigir si el carrito está vacío
+  useEffect(() => {
+    if (cart.length === 0) {
+      navigate('/');
+    }
+  }, [cart]);
 
   return (
     <>

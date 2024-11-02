@@ -1,7 +1,51 @@
 import useCartStore from '../stores/cartStore';
+import { toast } from 'sonner';
+import { Toaster } from 'sonner';
 
 const CartProduct = ({ img, talla, nombre, precio, cantidad, id }) => {
 	const { increaseQuantity, decreaseQuantity, removeFromCart } = useCartStore();
+
+	const handleIncrease = () => {
+		toast.success('Cantidad aumentada');
+		increaseQuantity(id, talla);
+	};
+
+	const handleDecrease = () => {
+		toast.success('Cantidad reducida');
+		decreaseQuantity(id, talla);
+	};
+
+	const handleRemove = () => {
+		toast.custom((t) => (
+			<div className="px-6 py-4 rounded-lg bg-white shadow-lg">
+				<h3 className="font-medium">¿Estás seguro de eliminar este producto?</h3>
+				<div className="mt-4 flex gap-2 justify-end">
+					<button
+						onClick={() => {
+							toast.dismiss(t);
+						}}
+						className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-sm"
+					>
+						Cancelar
+					</button>
+					<button
+						onClick={() => {
+							removeFromCart(id, talla);
+							toast.dismiss(t);
+							toast.error('Producto eliminado del carrito');
+						}}
+						className="px-3 py-1 rounded bg-red-500 hover:bg-red-600 text-white text-sm"
+					>
+						Eliminar
+					</button>
+				</div>
+			</div>
+		), {
+			duration: Infinity,
+			position: 'top-center'
+		});
+	};
+
 	return (
 		<>
 			<div className='justify-between mb-6 rounded-lg bg-white p-6 shadow-lg sm:flex sm:justify-start'>
@@ -18,7 +62,7 @@ const CartProduct = ({ img, talla, nombre, precio, cantidad, id }) => {
 					<div className='mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block'>
 						<div className='flex items-center border-gray-100'>
 							<span
-								onClick={() => decreaseQuantity(id, talla)}
+								onClick={handleDecrease}
 								className='cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50'
 							>
 								{' '}
@@ -32,7 +76,7 @@ const CartProduct = ({ img, talla, nombre, precio, cantidad, id }) => {
 								readOnly
 							/>
 							<span
-								onClick={() => increaseQuantity(id, talla)}
+								onClick={handleIncrease}
 								className='cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50'
 							>
 								{' '}
@@ -53,7 +97,7 @@ const CartProduct = ({ img, talla, nombre, precio, cantidad, id }) => {
 								strokeWidth='1.5'
 								stroke='currentColor'
 								className='h-5 w-5 cursor-pointer duration-150 hover:text-red-500'
-								onClick={() => removeFromCart(id, talla)}
+								onClick={handleRemove}
 							>
 								<path
 									strokeLinecap='round'
@@ -65,6 +109,7 @@ const CartProduct = ({ img, talla, nombre, precio, cantidad, id }) => {
 					</div>
 				</div>
 			</div>
+			<Toaster richColors position="bottom-right" />
 		</>
 	);
 };

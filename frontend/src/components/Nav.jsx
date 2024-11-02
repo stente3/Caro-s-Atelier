@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useCartStore from '../stores/cartStore';
 import Logo from '../assets/Logo.jpg';
+import { toast } from 'sonner';
 
 function Nav({ admin = false }) {
 	let tempItemCount = 0;
@@ -23,6 +24,15 @@ function Nav({ admin = false }) {
 			return () => clearTimeout(timer);
 		}
 	}, [tempItemCount]);
+
+	const handleCartClick = (e) => {
+		if (itemCount === 0) {
+			e.preventDefault();
+			toast.error('No hay productos en el carrito', {
+				position: "bottom-right"
+			});
+		}
+	};
 
 	return (
 		<nav className='bg-white relative'>
@@ -103,8 +113,9 @@ function Nav({ admin = false }) {
 						</Link>
 						<Link
 							to={'/cart'}
-							onClick={() => console.log(cart)}
-							className='flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse'
+							onClick={handleCartClick}
+							className={`flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse ${itemCount === 0 ? 'pointer-events-none' : ''
+								}`}
 						>
 							<button
 								data-collapse-toggle='navbar-cta'
@@ -133,13 +144,15 @@ function Nav({ admin = false }) {
 							</button>
 							<button
 								type='button'
-								className='inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 relative'
+								className={`inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 relative ${itemCount === 0 ? 'text-gray-300' : 'text-gray-500'
+									}`}
 								aria-label='Shopping Cart'
 							>
 								<div className='top-0 absolute left-6'>
 									<p
 										className={`h-0.5 w-0.5 flex items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white transition-transform duration-300 
-										${animate ? 'scale-110' : 'scale-100'}`}
+										${animate ? 'scale-110' : 'scale-100'} ${itemCount === 0 ? 'bg-gray-300' : ''
+											}`}
 									>
 										{itemCount}
 									</p>
@@ -154,7 +167,7 @@ function Nav({ admin = false }) {
 									viewBox='0 0 122.9 107.5'
 									style={{ enableBackground: 'new 0 0 122.9 107.5' }}
 									xmlSpace='preserve'
-									className='w-6 h-6'
+									className={`w-6 h-6 ${itemCount === 0 ? 'opacity-50' : ''}`}
 								>
 									<g>
 										<path
