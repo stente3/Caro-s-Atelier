@@ -6,7 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDataFetch } from '../hooks/useDataFetch';
 import { Loader } from '../components/Loader';
 import { Footer } from '../components/Footer';
-import { Toaster } from 'react-hot-toast';
+import { Toaster, toast } from 'sonner';
 
 const ProductDetails = () => {
 	const url = import.meta.env.VITE_API_URL;
@@ -166,7 +166,7 @@ const ProductDetails = () => {
 			)}
 			{/* Mensaje si el producto no se encuentra */}
 			{!product && !loading && <p>Producto no encontrado.</p>}
-			<Toaster />
+			<Toaster richColors position="top-center" />
 		</>
 	);
 };

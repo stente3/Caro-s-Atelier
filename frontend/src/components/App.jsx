@@ -5,7 +5,7 @@ import { useDataFetch } from '../hooks/useDataFetch.js';
 import useProductsStore from '../stores/productStore';
 import useCartStore from '../stores/cartStore';
 import { Footer } from '../components/Footer';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster, toast } from 'sonner';
 
 function App() {
 	const url = import.meta.env.VITE_API_URL;
@@ -29,7 +29,7 @@ function App() {
 			<HeaderLayout />
 			<ProductList products={products} loading={loading} error={error} />
 			<Footer />
-			<Toaster />
+			<Toaster richColors position="top-center" />
 		</>
 	);
 }

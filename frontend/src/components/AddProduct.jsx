@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import useProductsStore from '../stores/productStore';
 import { useImgurUpload } from '../hooks/useImgurUpload';
-import toast, { Toaster } from 'react-hot-toast';
+import { toast } from 'sonner';
 
 const AddProduct = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -72,37 +72,32 @@ const AddProduct = () => {
 			return;
 		}
 
-		// Mostrar el toast de carga
-		const loadingToast = toast.loading('Agregando nuevo producto...');
+		toast.promise(
+			async () => {
+				let updatedFormData = { ...formData };
 
-		try {
-			let updatedFormData = { ...formData };
+				if (formData.imagen && formData.imagen.startsWith('data:image')) {
+					const result = await uploadImage(formData.imagen);
 
-			if (formData.imagen && formData.imagen.startsWith('data:image')) {
-				const result = await uploadImage(formData.imagen);
+					if (!result.success) {
+						throw new Error('Error al subir la imagen');
+					}
 
-				if (!result.success) {
-					throw new Error('Error al subir la imagen');
+					updatedFormData = {
+						...updatedFormData,
+						imagen: result.imageLink,
+					};
 				}
 
-				updatedFormData = {
-					...updatedFormData,
-					imagen: result.imageLink,
-				};
+				await addProduct(updatedFormData);
+				handleCloseModal();
+			},
+			{
+				loading: 'Agregando nuevo producto...',
+				success: 'Producto agregado con éxito',
+				error: 'Error al agregar el producto'
 			}
-
-			await addProduct(updatedFormData);
-
-			// Cerrar el toast de carga y mostrar el toast de éxito
-			toast.dismiss(loadingToast);
-			toast.success("Producto agregado con éxito");
-			handleCloseModal();
-		} catch (error) {
-			// Si ocurre un error, cerrar el toast de carga y mostrar un toast de error
-			toast.dismiss(loadingToast);
-			toast.error('Error al agregar el producto');
-			console.error('Error al procesar la imagen o agregar el producto:', error);
-		}
+		);
 	};
 
 	const handleImageChange = e => {
@@ -254,7 +249,6 @@ const AddProduct = () => {
 					</div>
 				</div>
 			)}
-			<Toaster />
 		</>
 	);
 };

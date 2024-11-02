@@ -8,7 +8,7 @@ import { AddProduct } from '../components/AddProduct';
 import { Footer } from '../components/Footer';
 import { useImgurUpload } from '../hooks/useImgurUpload';
 import { Loader } from '../components/Loader';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster, toast } from 'sonner';
 
 const ProductAdminPanel = () => {
 	// Estado para almacenar el ID del producto que se está editando actualmente
@@ -40,24 +40,20 @@ const ProductAdminPanel = () => {
 
 	// Función para eliminar un producto por su ID
 	const handleRemove = async (id) => {
-		// Mostrar el toast de carga
-		const loadingToast = toast.loading('Eliminando el elemento...');
-
 		try {
-			// Llama a la función de Zustand para eliminar el producto del estado global
-			removeProductById(id);
-
-			// Cerrar el toast de carga y mostrar el toast de éxito
-			toast.dismiss(loadingToast);
-			toast.success('Elemento eliminado con éxito');
+			toast.promise(
+				async () => {
+					await removeProductById(id);
+					setIsDeleteModalOpen(false);
+				},
+				{
+					loading: 'Eliminando el elemento...',
+					success: 'Elemento eliminado con éxito',
+					error: 'Error al eliminar el elemento'
+				}
+			);
 		} catch (error) {
-			// Si ocurre un error, cerrar el toast de carga y mostrar un toast de error
-			toast.dismiss(loadingToast);
-			toast.error('Error al eliminar el elemento');
 			console.error('Error al eliminar el producto:', error);
-		} finally {
-			// Cerrar el modal de confirmación de eliminación
-			setIsDeleteModalOpen(false);
 		}
 	};
 
@@ -142,24 +138,16 @@ const ProductAdminPanel = () => {
 			return;
 		}
 
-		// Mostrar el toast de carga
-		const loadingToast = toast.loading('Guardando cambios...');
-
-		try {
-			await handleSave(selectedProductId, updatedProduct);
-
-			// Cerrar el toast de carga y mostrar el toast de éxito
-			toast.dismiss(loadingToast);
-			toast.success('Producto editado con éxito');
-		} catch (error) {
-			// Si ocurre un error, cerrar el toast de carga y mostrar un toast de error
-			toast.dismiss(loadingToast);
-			toast.error('Error al editar el producto');
-			console.error('Error al editar el producto:', error);
-		} finally {
-			// Cerrar el modal de edición
-			setIsChangeModalOpen(false);
-		}
+		toast.promise(
+			async () => {
+				await handleSave(selectedProductId, updatedProduct);
+			},
+			{
+				loading: 'Guardando cambios...',
+				success: 'Producto editado con éxito',
+				error: 'Error al editar el producto'
+			}
+		);
 	};
 
 	// Función para abrir el modal de confirmación de edición
@@ -387,7 +375,7 @@ const ProductAdminPanel = () => {
 				</tbody>
 			</table>
 			<Footer />
-			<Toaster />
+			<Toaster richColors position="top-center" />
 		</>
 	);
 };
