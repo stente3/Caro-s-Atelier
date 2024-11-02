@@ -10,9 +10,8 @@ import { Toaster, toast } from 'sonner';
 function App() {
 	const url = import.meta.env.VITE_API_URL;
 	const { loading, error } = useDataFetch(url);
-	// Obtiene la lista de productos del estado global
 	const products = useProductsStore(state => state.products);
-	const { showCartNotification, clearCartNotification } = useCartStore();
+	const { showCartNotification, clearCartNotification, showEmptyCartNotification, clearEmptyCartNotification } = useCartStore();
 
 	useEffect(() => {
 		if (showCartNotification) {
@@ -23,6 +22,16 @@ function App() {
 			clearCartNotification();
 		}
 	}, [showCartNotification, clearCartNotification]);
+
+	useEffect(() => {
+		if (showEmptyCartNotification) {
+			toast.info('Redirigido al menú principal porque no hay productos en el carrito.', {
+				icon: '🚫',
+				duration: 2000,
+			});
+			clearEmptyCartNotification();
+		}
+	}, [showEmptyCartNotification, clearEmptyCartNotification]);
 
 	return (
 		<>

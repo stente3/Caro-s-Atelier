@@ -14,6 +14,9 @@ const useCartStore = create(set => ({
 	// Notificación para mostrar cuando se agrega un producto
 	showCartNotification: false,
 
+	// Notificación para redireccionar al inicio si el carrito está vacío
+	showEmptyCartNotification: false,
+
 	// Función para sumar 1 al contador de productos
 	incrementItemCount: () =>
 		set(state => ({
@@ -127,15 +130,25 @@ const useCartStore = create(set => ({
 				.reduce((acc, item) => acc + item.precio * item.cantidad, 0)
 				.toFixed(3);
 
+			// Notificación para carrito vacío
+			if (updatedItemCount === 0) {
+				// Mostrar notificación de carrito vacío
+				set({ showEmptyCartNotification: true });
+			}
+
 			return {
 				cart: updatedCart,
 				itemCount: updatedItemCount,
 				totalPrice: newTotalPrice,
+				showEmptyCartNotification: updatedItemCount === 0,
 			};
 		}),
 
 	// Función para limpiar la notificación del carrito
 	clearCartNotification: () => set({ showCartNotification: false }),
+
+	// Función para limpiar la notificación de carrito vacío
+	clearEmptyCartNotification: () => set({ showEmptyCartNotification: false }),
 }));
 
 export default useCartStore;

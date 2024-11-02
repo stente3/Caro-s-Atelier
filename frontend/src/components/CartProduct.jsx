@@ -11,8 +11,10 @@ const CartProduct = ({ img, talla, nombre, precio, cantidad, id }) => {
 	};
 
 	const handleDecrease = () => {
-		toast.success('Cantidad reducida');
-		decreaseQuantity(id, talla);
+		if (cantidad > 1) {
+			toast.success('Cantidad reducida');
+			decreaseQuantity(id, talla);
+		}
 	};
 
 	const handleRemove = () => {
