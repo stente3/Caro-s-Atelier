@@ -9,7 +9,7 @@ function Nav({ admin = false }) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [animate, setAnimate] = useState(false);
 
-	const { itemCount, cart } = useCartStore();
+	const { itemCount } = useCartStore();
 
 	const handleToggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);

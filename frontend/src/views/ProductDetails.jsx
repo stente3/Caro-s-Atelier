@@ -6,7 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDataFetch } from '../hooks/useDataFetch';
 import { Loader } from '../components/Loader';
 import { Footer } from '../components/Footer';
-import { Toaster, toast } from 'sonner';
+import { Toaster } from 'sonner';
 
 const ProductDetails = () => {
 	const url = import.meta.env.VITE_API_URL;
@@ -116,7 +116,7 @@ const ProductDetails = () => {
 										</button>
 										<div
 											id='dropdown-menu'
-											className={`w-full origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 ${isHidden ? 'hidden' : ''}`}
+											className={`w-full origin-top-right absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 ${isHidden ? 'hidden' : ''}`}
 										>
 											<div
 												className='py-2 p-2'
@@ -128,7 +128,7 @@ const ProductDetails = () => {
 													<a
 														onClick={() => handleCurrentSize(talla)}
 														key={index}
-														className='flex justify-center block rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer'
+														className='flex justify-center rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer'
 														role='menuitem'
 													>
 														{talla}

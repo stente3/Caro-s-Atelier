@@ -316,7 +316,7 @@ const ProductAdminPanel = () => {
 									product.categoria
 								)}
 							</td>
-							<td className='w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static flex justify-center'>
+							<td className='w-full lg:w-auto p-3 text-gray-800 text-center border border-b lg:table-cell relative lg:static flex justify-center'>
 								<span className='lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase'>
 									Imagen
 								</span>
