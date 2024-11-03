@@ -63,7 +63,7 @@ const ProductDetails = () => {
 			{/* Mostrar detalles del producto si está disponible */}
 			{product && (
 				<>
-					<div className='min-w-screen flex items-center p-5 overflow-hidden relative'>
+					<div className='min-w-screen flex items-center p-5 relative'>
 						<div className='w-full max-w-6xl rounded bg-white -10 lg:p-20 mx-auto text-gray-800 relative md:text-left'>
 							<div className='md:flex items-center -mx-10'>
 								<div className='w-full md:w-1/2 px-10 mb-10 md:mb-0'>
