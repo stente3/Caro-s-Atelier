@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { HeaderLayout } from '../Layout/HeaderLayout';
-import { ProductList } from './ProductList';
+import { ProductList } from '../components/ProductList.jsx';
 import { useDataFetch } from '../hooks/useDataFetch.js';
 import useProductsStore from '../stores/productStore';
 import useCartStore from '../stores/cartStore';
 import { Footer } from '../components/Footer';
 import { Toaster, toast } from 'sonner';
 
-function App() {
+function ProductCatalog() {
 	const url = import.meta.env.VITE_API_URL;
 	const { loading, error } = useDataFetch(url);
 	const products = useProductsStore(state => state.products);
@@ -43,4 +43,4 @@ function App() {
 	);
 }
 
-export default App;
+export default ProductCatalog;

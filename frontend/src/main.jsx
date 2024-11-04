@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import App from './components/App.jsx';
+import ProductCatalog from './views/ProductCatalog.jsx';
 import { NotFound } from './views/NotFound.jsx';
 import { ProductDetails } from './views/ProductDetails.jsx';
 import { ProductAdminPanel } from './views/ProductAdminPanel.jsx';
@@ -10,7 +10,7 @@ import './styles/index.css';
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <App />,
+		element: <ProductCatalog />,
 		errorElement: <NotFound />,
 	},
 	{
