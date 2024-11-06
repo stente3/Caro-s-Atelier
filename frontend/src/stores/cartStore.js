@@ -17,6 +17,35 @@ const useCartStore = create(set => ({
 	// Notificación para redireccionar al inicio si el carrito está vacío
 	showEmptyCartNotification: false,
 
+	// Función para generar el mensaje personalizado con productos del carrito
+	generateMessage: () => {
+		const { cart } = useCartStore.getState();
+
+		// Si el carrito está vacío, no hay mensaje para generar
+		if (cart.length === 0) {
+			return 'El carrito está vacío.';
+		}
+		const espacio = '%20';
+		const renglon = '%0A';
+		const comillaSimple = '%27';
+		// Mensaje inicial
+		let message = `%F0%9F%91%8B%20Hola%20Caro${comillaSimple}s${espacio}Atelier%F0%9F%8C%9F%0A%0AMe%20gustar%C3%ADa%20confirmar%20mi%20pedido%20con%20estos%20productos${espacio}%F0%9F%9B%92${renglon}${renglon}`;
+
+		// Iterar sobre los productos del carrito para construir el mensaje
+		cart.forEach((item, index) => {
+			message += `${item.cantidad} "${item.nombre}" Talla: "${item.talla}"`;
+			// Agregar un espacio si no es el último producto
+			if (index < cart.length - 1) {
+				message += renglon;
+			}
+			if (index == cart.length - 1) {
+				message += `${renglon}${renglon}%21Espero%20su%20confirmaci%C3%B3n%20para%20continuar%21%20%F0%9F%93%B2`;
+			}
+		});
+
+		return message;
+	},
+
 	// Función para sumar 1 al contador de productos
 	incrementItemCount: () =>
 		set(state => ({
@@ -31,7 +60,9 @@ const useCartStore = create(set => ({
 
 			const productToAdd = products.find(product => product.id === productId);
 			if (!productToAdd) {
-				console.error(`Producto con ID ${productId} no encontrado en la store de productos.`);
+				console.error(
+					`Producto con ID ${productId} no encontrado en la store de productos.`,
+				);
 				return state;
 			}
 
@@ -152,4 +183,3 @@ const useCartStore = create(set => ({
 }));
 
 export default useCartStore;
-
