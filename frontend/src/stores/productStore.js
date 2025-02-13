@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
+import { API_BASE_URL, ENDPOINTS } from '../config/api';
 
 const useProductsStore = create((set, get) => ({
 	products: [],
@@ -64,7 +65,7 @@ const useProductsStore = create((set, get) => ({
 	updateJSONBin: async (updatedProducts) => {
 		try {
 			const response = await axios.put(
-				'http://localhost:3000/update',
+				`${API_BASE_URL}${ENDPOINTS.UPDATE_DATA}`,
 				{ record: updatedProducts },
 				{
 					headers: {

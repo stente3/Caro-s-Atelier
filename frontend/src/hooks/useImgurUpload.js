@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_BASE_URL, ENDPOINTS } from '../config/api';
 
 const useImgurUpload = () => {
 	const [loading, setLoading] = useState(false);
@@ -14,7 +15,7 @@ const useImgurUpload = () => {
 			const formData = new FormData();
 			formData.append('imagen', blob, 'image.jpg');
 
-			const response = await fetch('http://localhost:3000/upload', {
+			const response = await fetch(`${API_BASE_URL}${ENDPOINTS.UPLOAD_IMAGE}`, {
 				method: 'POST',
 				body: formData,
 			});
