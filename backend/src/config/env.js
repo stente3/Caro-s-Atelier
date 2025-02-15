@@ -16,5 +16,7 @@ export const config = {
     masterKey: process.env.JSONBIN_MASTER_KEY,  // Clave maestra para acceder a JSONBin
     jsonBinUrl: process.env.JSONBIN_URL,    // URL del contenedor en JSONBin
     port: process.env.PORT || 3000, // Puerto del servidor, usa 3000 si no está definido
-    uploadPath: path.join(__dirname, '../../upload/images') // Ruta absoluta para guardar imágenes temporales
+    uploadPath: path.join(__dirname, '../../upload/images'), // Ruta absoluta para guardar imágenes temporales
+    jwtSecret: process.env.JWT_SECRET || 'jwt_secret_default', // Clave secreta para firmar los tokens JWT
+    jsonBinUsersBinId: process.env.JSONBIN_USERS_BIN // ID del contenedor de usuarios en JSONBin
 }; 
