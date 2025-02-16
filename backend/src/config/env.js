@@ -18,5 +18,6 @@ export const config = {
     port: process.env.PORT || 3000, // Puerto del servidor, usa 3000 si no está definido
     uploadPath: path.join(__dirname, '../../upload/images'), // Ruta absoluta para guardar imágenes temporales
     jwtSecret: process.env.JWT_SECRET || 'jwt_secret_default', // Clave secreta para firmar los tokens JWT
-    jsonBinUsersBinId: process.env.JSONBIN_USERS_BIN // ID del contenedor de usuarios en JSONBin
+    jsonBinUsersBinId: process.env.JSONBIN_USERS_BIN, // ID del contenedor de usuarios en JSONBin
+    frontUrl: process.env.FRONT_URL // URL del front
 }; 

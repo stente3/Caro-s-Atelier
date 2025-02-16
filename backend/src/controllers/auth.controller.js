@@ -1,6 +1,9 @@
 import userModel from '../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import { createAccessToken } from '../libs/jwt.js';
+import jwt from 'jsonwebtoken';
+import { config } from '../config/env.js';
+
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -63,4 +66,26 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   res.clearCookie('token');
   res.json({ message: 'Logged out successfully' });
-}; 
+};
+
+export const verifyToken = async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ message: "No token provided" });
+
+    jwt.verify(token, config.jwtSecret, async (err, decoded) => {
+      if (err) return res.status(401).json({ message: "Unauthorized" });
+
+      const user = await userModel.findOne({ _id: decoded.id });
+      if (!user) return res.status(401).json({ message: "User not found" });
+
+      return res.json({
+        id: user._id,
+        name: user.name,
+        email: user.email
+      });
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

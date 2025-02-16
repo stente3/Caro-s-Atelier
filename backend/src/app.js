@@ -6,11 +6,15 @@ import dataRoutes from './routes/dataRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import cookieParser from 'cookie-parser';
 import authRoutes from './routes/authRoutes.js';
+import { config } from './config/env.js';
 
 const app = express();
 
 // Middlewares
-app.use(cors());
+app.use(cors({
+  origin: config.frontUrl, // URL del front-end
+  credentials: true
+}));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser());

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { register, login, logout } from '../controllers/auth.controller.js';
+import { register, login, logout, verifyToken } from '../controllers/auth.controller.js';
 import { authRequired } from '../middleware/authRequired.js';
 import userModel from '../models/user.model.js';
 
@@ -25,5 +25,7 @@ router.get('/profile', authRequired, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+router.get('/verify', verifyToken);
 
 export default router; 
