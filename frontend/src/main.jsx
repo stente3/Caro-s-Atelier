@@ -5,6 +5,8 @@ import { NotFound } from './views/NotFound.jsx';
 import { ProductDetails } from './views/ProductDetails.jsx';
 import { ProductAdminPanel } from './views/ProductAdminPanel.jsx';
 import { CartPanel } from './views/CartPanel.jsx';
+import LoginPage from './views/LoginPage.jsx';
+import { ProtectedRoute } from './components/ProtectedRoute.jsx';
 import './styles/index.css';
 
 const router = createBrowserRouter([
@@ -18,13 +20,23 @@ const router = createBrowserRouter([
 		element: <ProductDetails />,
 	},
 	{
-		path: '/admin/caro',
-		element: <ProductAdminPanel />,
+		path: '/admin',
+		element: <ProtectedRoute />,
+		children: [
+			{
+				path: 'caro',
+				element: <ProductAdminPanel />,
+			},
+		],
 	},
 	{
 		path: '/cart',
 		element: <CartPanel />,
 	},
+	{
+		path: '/login',
+		element: <LoginPage />
+	}
 ]);
 
 createRoot(document.getElementById('root')).render(
