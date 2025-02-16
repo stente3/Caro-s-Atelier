@@ -90,14 +90,6 @@ function Nav({ admin = false }) {
 											Productos
 										</Link>
 									</li>
-									<li>
-										<Link
-											to={'/categories'}
-											className='block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent'
-										>
-											Categorías
-										</Link>
-									</li>
 								</ul>
 							</div>
 						</div>
@@ -184,54 +176,6 @@ function Nav({ admin = false }) {
 								</svg>
 							</button>
 						</Link>
-						<div
-							className={`md:flex ${isMenuOpen ? 'block' : 'hidden'} absolute md:static top-16 left-0 z-50 w-full md:w-auto bg-white md:bg-transparent`}
-							id='navbar-cta'
-						>
-							<ul className='text-center flex flex-col md:flex-row font-medium p-4 md:p-0 mt-4 md:mt-0 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:border-0 md:bg-white'>
-								<li>
-									<Link
-										to={'/'}
-										className='block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent'
-										aria-current='page'
-									>
-										Productos
-									</Link>
-								</li>
-								<li>
-									<a
-										href='#'
-										className='block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent'
-									>
-										Pijamas
-									</a>
-								</li>
-								<li>
-									<a
-										href='#'
-										className='block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent'
-									>
-										Faldas
-									</a>
-								</li>
-								<li>
-									<a
-										href='#'
-										className='block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent'
-									>
-										Camisas y Blusas
-									</a>
-								</li>
-								<li>
-									<a
-										href='#'
-										className='block py-2 px-3 md:p-0 text-white bg-slate-700 rounded md:bg-transparent md:text-gray-900'
-									>
-										Contacto
-									</a>
-								</li>
-							</ul>
-						</div>
 					</>
 				)}
 			</div>

@@ -139,7 +139,7 @@ const ProductDetails = () => {
 									</div>
 
 									<div>
-										<div className='inline-block align-bottom mr-5'>
+										<div className='inline-block align-bottom mr-5 my-1'>
 											<span className='text-medium leading-none align-baseline font-bold'>
 												$
 											</span>

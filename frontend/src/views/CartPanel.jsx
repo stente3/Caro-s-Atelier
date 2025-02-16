@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { Nav } from '../components/Nav';
 import { CartProduct } from '../components/CartProduct';
 import useCartStore from '../stores/cartStore';
+import {config} from '../config/env';
 
 const CartPanel = () => {
-	const phone = import.meta.env.VITE_PHONE_NUMBER;
+	const phone = config.phoneNumber;
 	const { cart, totalPrice, generateMessage } = useCartStore();
 	const navigate = useNavigate();
 
